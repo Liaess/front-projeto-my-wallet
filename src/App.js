@@ -1,24 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import Login from "./Pages/Login";
+import Signup from "./Pages/Signup";
+import Wallet from "./Pages/Wallet";
+import Reveneu from "./Pages/Reveneu";
+import Expense from "./Pages/Expense";
+import GlobalStyles from "./Styles/GlobalStyles";
+import { Route, Switch, BrowserRouter } from "react-router-dom"; 
+import UserContext from "./Context/UserContext";
+import { useState } from "react";
 
 function App() {
+  const [user, setUser] = useState()
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value = {{user,setUser}}>
+      <BrowserRouter>
+      <GlobalStyles />
+        <Switch>
+          <Route path="/" exact component={Login} />
+          <Route path="/signup" exact component={Signup} />
+          <Route path="/wallet" exact component={Wallet} />
+          <Route path="/reveneu" exact component={Reveneu} />
+          <Route path="/expense" exact component={Expense} />
+        </Switch>
+      </BrowserRouter>
+    </UserContext.Provider>
   );
 }
 
