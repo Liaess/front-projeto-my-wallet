@@ -1,7 +1,7 @@
 import Login from "./Pages/Login";
 import Signup from "./Pages/Signup";
 import Wallet from "./Pages/Wallet";
-import Reveneu from "./Pages/Reveneu";
+import Revenue from "./Pages/Revenue";
 import Expense from "./Pages/Expense";
 import GlobalStyles from "./Styles/GlobalStyles";
 import { Route, Switch, BrowserRouter } from "react-router-dom"; 
@@ -19,7 +19,7 @@ function App() {
           <Route path="/" exact component={Login} />
           <Route path="/signup" exact component={Signup} />
           <Route path="/wallet" exact component={Wallet} />
-          <Route path="/reveneu" exact component={Reveneu} />
+          <Route path="/revenue" exact component={Revenue} />
           <Route path="/expense" exact component={Expense} />
         </Switch>
       </BrowserRouter>

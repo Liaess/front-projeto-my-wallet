@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import { useContext, useState } from "react";
 import { ExitOutline } from 'react-ionicons';
 import { AddCircleOutline } from 'react-ionicons';
 import { RemoveCircleOutline } from 'react-ionicons';
 import { Link, useHistory } from "react-router-dom";
 import UserContext from "../Context/UserContext";
+import { useContext } from "react";
 import axios from "axios";
 
 
@@ -15,8 +15,16 @@ function Wallet(){
     function logout(){
         const req = axios.post(`http://localhost:4000/logout`,{}, {
             headers: { Authorization: `Bearer ${user.token}`}
-        })
-        req.then(()=>{history.push("/")})
+        });
+        req.then(()=>{history.push("/")});
+        req.catch((err)=>{
+            if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");
+            if(err.response.status === 401){
+                alert("Você foi desconectado, por favor faça um login novamente!");
+                history.push("/");
+                return
+            }
+        });
     }
 
     return(
@@ -34,15 +42,15 @@ function Wallet(){
                 <p>Não há registros de entrada ou saída</p>
             </MyWallet>
             <Create>
-                <Link to={"/reveneu"}>
-                    <Reveneu>
+                <Link to={"/revenue"}>
+                    <Revenue>
                         <AddCircleOutline
                             color={'#00000'}
                             height="22px"
                             width="22px"
                         />
                         <p>Nova entrada</p>
-                    </Reveneu>
+                    </Revenue>
                 </Link>
                 <Link to={"/expense"}>
                     <Expense>
@@ -105,7 +113,7 @@ const Create = styled.div`
     color: #fff;
 `
 
-const Reveneu = styled.div`
+const Revenue = styled.div`
     width: 155px;
     height: 114px;
     background-color: #A328D6;

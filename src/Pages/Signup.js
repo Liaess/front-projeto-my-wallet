@@ -10,11 +10,33 @@ function Signup(){
     const [email, setEmail] = useState("");
     const [password, setPassword] =useState("");
     const [confirmPassword, setConfirmPassword] =useState("");
+    const history = useHistory();
 
     function AttemptToSignUp(e){
-        e.preventDefault()
-        // setDisable(true)
-        console.log("Feature ainda não implementada!")
+        e.preventDefault();
+        if(name === "") return alert("Campo do nome não pode estar vázio!");
+        if(email === "") return alert("Campo do e-mail não pode estar vázio!");
+        if(password === "") return alert("Campo da senha não pode estar vázio!");
+        if(confirmPassword === "") return alert("Campo confirme a senha não pode estar vázio!");
+        if(password !== confirmPassword) return alert("Senhas não coincidem!");
+        setDisable(true);
+        const body = {
+            name,
+            email,
+            password
+        }
+        const req = axios.post(`http://localhost:4000/signup`,body);
+        req.then(()=>{
+            history.push("/")
+        });
+        req.catch((err)=>{
+            setEmail("");
+            setPassword("");
+            setDisable(false);
+            if(err.response.status === 400) return alert("Email possiu um formato inválido!");
+            if(err.response.status === 409) return alert("Email já está em uso!");
+            if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");
+        });
     }
 
     return(
@@ -26,24 +48,28 @@ function Signup(){
                         type="text" 
                         disabled={disable} 
                         placeholder="Nome"
+                        value={name}
                         onChange={(e)=>{setName(e.target.value)}}
                     />
                     <Input 
                         type="email" 
                         disabled={disable} 
                         placeholder="E-mail"
+                        value={email}
                         onChange={(e)=>{setEmail(e.target.value)}}
                     />
                     <Input 
                         type="password" 
                         disabled={disable} 
                         placeholder="Senha"
+                        value={password}
                         onChange={(e)=>{setPassword(e.target.value)}}>
                     </Input>
                     <Input 
                         type="password" 
                         disabled={disable} 
                         placeholder="Confirme a senha"
+                        value={confirmPassword}
                         onChange={(e)=>{setConfirmPassword(e.target.value)}}
                     />
                     <Button disabled={disable} type="submit">{disable === true ? <Loader type="ThreeDots" color="#FFF" height={45} width={60}/> : "Cadastrar" }</Button>

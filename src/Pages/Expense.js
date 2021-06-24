@@ -3,17 +3,41 @@ import Loader from "react-loader-spinner";
 import { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import UserContext from "../Context/UserContext";
+import { useContext } from "react";
 
 function Expense(){
     const [disable, setDisable] = useState(false);
     const [value, setValue] = useState("");
     const [description, setDescription] = useState("");
     const history = useHistory();
+    const { user } = useContext(UserContext);
 
     function saveExpense(e){
-        e.preventDefault()
-        // setDisable(true)
-        console.log("Feature ainda não implementada!");
+        e.preventDefault();
+        if(value === "") return alert("Campo do valor não pode estar vázio!");
+        if(description === "") return alert("Campo da descrição não pode estar vázio!");
+        setDisable(true);
+        const body = {
+            name: user.user,
+            value,
+            description
+        }
+        const req = axios.post(`http://localhost:4000/expense`,body, {
+            headers: { Authorization: `Bearer ${user.token}`}
+        });
+        req.then(()=>{
+            history.push("/wallet");
+        });
+        req.catch((err)=>{
+            setDisable(false);
+            if(err.response.status === 500) alert("Ocorreu um imprevisto, tente novamente!");
+            if(err.response.status === 401){
+                alert("Você foi desconectado, por favor faça um login novamente!");
+                history.push("/");
+                return
+            }
+        });
     }
 
     return(
@@ -24,19 +48,22 @@ function Expense(){
             <Container>
                 <Form onSubmit={saveExpense}>
                     <Input 
-                        type="text" 
+                        type="number" 
                         disabled={disable} 
                         placeholder="Valor"
+                        value={value}
                         onChange={(e)=>{setValue(e.target.value)}}
                     />
                     <Input 
                         type="text" 
                         disabled={disable} 
                         placeholder="Descrição"
+                        value={description}
                         onChange={(e)=>{setDescription(e.target.value)}}
                     />
+                    <Button disabled={disable} type="submit">{disable === true ? <Loader type="ThreeDots" color="#FFF" height={45} width={60}/> : "Salvar saída" }</Button>
                     <Link to={"/wallet"}>
-                        <Button disabled={disable} type="submit">{disable === true ? <Loader type="ThreeDots" color="#FFF" height={45} width={60}/> : "Salvar saída" }</Button>
+                        <Button>Cancelar</Button>
                     </Link>
                 </Form>
             </Container>
@@ -101,7 +128,7 @@ const Button = styled.button`
     font-family: 'Raleway', sans-serif;
     font-weight: 700;
     font-size: 20px;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
 `
 
 export default Expense;

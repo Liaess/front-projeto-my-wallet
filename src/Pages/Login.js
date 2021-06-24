@@ -10,11 +10,13 @@ function Login(){
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();
-    const { setUser } = useContext(UserContext)
+    const { setUser } = useContext(UserContext);
 
     function AttemptToLogin(e){
         e.preventDefault();
         setDisable(true);
+        if(email === "") return alert("Campo do e-mail não pode estar vázio!");
+        if(password === "") return alert("Campo da senha não pode estar vázio!");
         const body = {
             email,
             password
@@ -27,13 +29,14 @@ function Login(){
             }
             setUser(userData);
             history.push("/wallet")
-        })
+        });
         req.catch((err)=>{
             setEmail("");
             setPassword("");
-            setDisable(false)
-            if(err.response.status === 401) alert("Email/senha incorretos");
-            if(err.response.status === 500) alert("Ocorreu um imprevisto, tente novamente!");
+            setDisable(false);
+            if(err.response.status === 406) return alert("Email não cadastrado!");
+            if(err.response.status === 401) return alert("Email/senha incorretos!");
+            if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");
         });
     }
 
@@ -46,12 +49,14 @@ function Login(){
                         type="email" 
                         disabled={disable} 
                         placeholder="E-mail"
+                        value={email}
                         onChange={(e)=>{setEmail(e.target.value)}}
                     />
                     <Input 
                         type="password"
                         disabled={disable} 
                         placeholder="Senha"
+                        value={password}
                         onChange={(e)=>{setPassword(e.target.value)}}
                     />
                     <Button disabled={disable} type="submit" >{disable === true ? <Loader type="ThreeDots" color="#FFF" height={45} width={60}/> : "Entrar" }</Button>
