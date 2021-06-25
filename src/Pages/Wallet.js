@@ -39,15 +39,20 @@ function Wallet(){
             setTransactions(data);
             setIsWaitingServer(false);
         });
-        req.catch(()=>{
-
+        req.catch((err)=>{
+            if(err.response.status === 500) alert("Ocorreu um imprevisto, tente novamente!");
+            if(err.response.status === 401){
+                alert("Você foi desconectado, por favor faça um login novamente!");
+                history.push("/");
+                localStorage.clear();
+                return
+            }
         });
     }
 
     useEffect(()=>{
         getWalletItems();
     },[]); //eslint-disable-line
-
 
     return(
         <Main>
@@ -120,6 +125,7 @@ const MyWallet = styled.div`
     display: flex;
     width: 326px;
     min-height: 446px;
+    max-height: 446px;
     background-color: #fff;
     margin: 0 auto;
     border-radius: 5px;
@@ -137,6 +143,7 @@ const MyWallet = styled.div`
 const History = styled.div`
     display: flex;
     flex-direction: column;
+    overflow-y: scroll;
 `
 
 const Price = styled.span`
@@ -210,8 +217,10 @@ const Balance = styled.div`
     font-size: 17px;
     color: #000000;
     padding: 10px 10px;
+    word-break: break-all;
     p{
         font-weight: bold;
+        min-width: 65px;
     }
 `;
 

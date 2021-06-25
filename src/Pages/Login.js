@@ -18,9 +18,10 @@ function Login(){
 
     function AttemptToLogin(e){
         e.preventDefault();
-        setDisable(true);
         if(email === "") return alert("Campo do e-mail não pode estar vázio!");
         if(password === "") return alert("Campo da senha não pode estar vázio!");
+        if(password.length < 4) return alert("Campo da senha precisa ter pelo menos quatro caracteres!");
+        setDisable(true);
         const body = {
             email,
             password
@@ -39,6 +40,7 @@ function Login(){
             setEmail("");
             setPassword("");
             setDisable(false);
+            if(err.response.status === 400) return alert("Algum dado digitado inválido!");
             if(err.response.status === 406) return alert("Email não cadastrado!");
             if(err.response.status === 401) return alert("Email/senha incorretos!");
             if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");

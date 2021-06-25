@@ -32,6 +32,7 @@ function Revenue(){
         req.catch((err)=>{
             setDisable(false);
             if(err.response.status === 500) alert("Ocorreu um imprevisto, tente novamente!");
+            if(err.response.status === 400) alert("Valor digitado inválido!");
             if(err.response.status === 401){
                 alert("Você foi desconectado, por favor faça um login novamente!");
                 history.push("/");

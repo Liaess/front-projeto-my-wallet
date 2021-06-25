@@ -18,6 +18,8 @@ function Signup(){
         if(email === "") return alert("Campo do e-mail não pode estar vázio!");
         if(password === "") return alert("Campo da senha não pode estar vázio!");
         if(confirmPassword === "") return alert("Campo confirme a senha não pode estar vázio!");
+        if(password.length < 4) return alert("Campo da senha precisa ter pelo menos quatro caracteres!");
+        if(confirmPassword.length < 4) return alert("Campo confirme a senha precisa ter pelo menos quatro caracteres!");
         if(password !== confirmPassword) return alert("Senhas não coincidem!");
         setDisable(true);
         const body = {
@@ -30,10 +32,12 @@ function Signup(){
             history.push("/")
         });
         req.catch((err)=>{
+            setName("");
             setEmail("");
             setPassword("");
+            setConfirmPassword("");
             setDisable(false);
-            if(err.response.status === 400) return alert("Email possiu um formato inválido!");
+            if(err.response.status === 400) return alert("Algum dado digitado inválido!");
             if(err.response.status === 409) return alert("Email já está em uso!");
             if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");
         });
