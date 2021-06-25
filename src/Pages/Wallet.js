@@ -64,7 +64,7 @@ function Wallet(){
             transactions.transactions.length ?
             <MyWallet>
                 <History>
-                    {transactions.transactions.map((t,index)=> <Transaction transaction={t} key={index} />)}
+                    {transactions.transactions.map((t,index)=> <Transaction transaction={t} key={index} />).reverse()}
                 </History>
                 <Balance><p>SALDO:</p><Price total={transactions.total} >{(transactions.total/100).toLocaleString("pt-BR", {style: 'currency', currency: 'BRL' })}</Price></Balance>
             </MyWallet>
