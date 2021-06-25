@@ -28,6 +28,7 @@ function Login(){
                 token: data.token
             }
             setUser(userData);
+            localStorage.setItem("user", JSON.stringify(userData));
             history.push("/wallet")
         });
         req.catch((err)=>{
