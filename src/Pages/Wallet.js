@@ -19,12 +19,13 @@ function Wallet(){
         const req = axios.post(`http://localhost:4000/logout`,{}, {
             headers: { Authorization: `Bearer ${user.token}`}
         });
-        req.then(()=>{history.push("/")});
+        req.then(()=>{localStorage.clear();history.push("/")});
         req.catch((err)=>{
             if(err.response.status === 500) return alert("Ocorreu um imprevisto, tente novamente!");
             if(err.response.status === 401){
                 alert("Você foi desconectado, por favor faça um login novamente!");
                 history.push("/");
+                localStorage.clear();
                 return
             }
         });

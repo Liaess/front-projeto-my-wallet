@@ -12,6 +12,10 @@ function Login(){
     const history = useHistory();
     const { setUser } = useContext(UserContext);
 
+    if(localStorage.length !== 0){
+        history.push("/wallet");
+    }
+
     function AttemptToLogin(e){
         e.preventDefault();
         setDisable(true);

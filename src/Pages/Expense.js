@@ -35,6 +35,7 @@ function Expense(){
             if(err.response.status === 401){
                 alert("Você foi desconectado, por favor faça um login novamente!");
                 history.push("/");
+                localStorage.clear();
                 return
             }
         });
