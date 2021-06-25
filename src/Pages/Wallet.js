@@ -4,12 +4,15 @@ import { AddCircleOutline } from 'react-ionicons';
 import { RemoveCircleOutline } from 'react-ionicons';
 import { Link, useHistory } from "react-router-dom";
 import UserContext from "../Context/UserContext";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import axios from "axios";
-
+import Transaction from "../Component/Transaction";
+import Loading from "../Component/Loading";
 
 function Wallet(){
     const { user } = useContext(UserContext);
+    const [transactions, setTransactions] = useState([]);
+    const [isWaitingServer, setIsWaitingServer] = useState(true);
     const history = useHistory();
 
     function logout(){
@@ -27,6 +30,24 @@ function Wallet(){
         });
     }
 
+    function getWalletItems(){
+        const req = axios.get(`http://localhost:4000/wallet`, {
+            headers: { Authorization: `Bearer ${user.token}`}
+        });
+        req.then(({data})=>{
+            setTransactions(data);
+            setIsWaitingServer(false);
+        });
+        req.catch(()=>{
+
+        });
+    }
+
+    useEffect(()=>{
+        getWalletItems();
+    },[]); //eslint-disable-line
+
+
     return(
         <Main>
             <Header>
@@ -38,9 +59,19 @@ function Wallet(){
                 onClick={logout}
                 />
             </Header>
+            {isWaitingServer ? <Loading /> : 
+            transactions.transactions.length ?
             <MyWallet>
-                <p>Não há registros de entrada ou saída</p>
+                <History>
+                    {transactions.transactions.map((t,index)=> <Transaction transaction={t} key={index} />)}
+                </History>
+                <Balance><p>SALDO:</p><Price total={transactions.total} >{(transactions.total/100).toLocaleString("pt-BR", {style: 'currency', currency: 'BRL' })}</Price></Balance>
             </MyWallet>
+            :
+            <EmptyBox>
+                <h2>Não há registros de entrada ou saída</h2>
+            </EmptyBox>
+            }
             <Create>
                 <Link to={"/revenue"}>
                     <Revenue>
@@ -67,6 +98,7 @@ function Wallet(){
     )
 }
 
+
 const Main = styled.div`
     background-color: #8c22be;
     width: 100vw;
@@ -90,10 +122,37 @@ const MyWallet = styled.div`
     background-color: #fff;
     margin: 0 auto;
     border-radius: 5px;
+    flex-direction: column;
+    justify-content: space-between;
+    h2{
+        width: 60%;
+        font-weight: 400;
+        text-align: center;
+        color: #868686;
+        font-size: 20px;
+    }
+`
+
+const History = styled.div`
+    display: flex;
+    flex-direction: column;
+`
+
+const Price = styled.span`
+    color: ${props => props.total > 0 ? "green" : "red"};
+`
+
+const EmptyBox = styled.div`
+    display: flex;
+    width: 326px;
+    min-height: 446px;
+    background-color: #fff;
+    margin: 0 auto;
+    border-radius: 5px;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    &>p{ //&> filho direto
+    h2{
         width: 60%;
         font-weight: 400;
         text-align: center;
@@ -142,5 +201,17 @@ const Expense = styled.div`
         font-weight: 700;
     }
 `
+
+const Balance = styled.div`
+    display:flex;
+    justify-content: space-between;
+    font-family: 'Raleway';
+    font-size: 17px;
+    color: #000000;
+    padding: 10px 10px;
+    p{
+        font-weight: bold;
+    }
+`;
 
 export default Wallet
