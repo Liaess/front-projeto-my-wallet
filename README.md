@@ -35,13 +35,13 @@ The following tools and frameworks were used in the construction of the project:
 ```bash
 npm i
 ```
-4. Run the front-end with
-5. Make a copy of .env.example and alter informations according to your preference
+4. Make a copy of .env.example and alter informations according to your preference
+5. Run the front-end with
 ```bash
 npm start
 ```
-5. You can optionally build the project running
+6. You can optionally build the project running
 ```bash
 npm run build
 ```
-6. Finally access your preference url
+7. Finally access your preference url
