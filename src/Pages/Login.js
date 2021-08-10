@@ -1,9 +1,9 @@
-import styled from "styled-components";
 import { Link, useHistory } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
 import Loader from "react-loader-spinner";
 import UserContext from "../Context/UserContext";
+import { Main, Container, Form, Input, Button } from "../Styles/LoginStyles"
 
 function Login(){
     const [disable, setDisable] = useState(false);
@@ -26,7 +26,7 @@ function Login(){
             email,
             password
         }
-        const req = axios.post(`http://localhost:4000/signin`,body);
+        const req = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signin`,body);
         req.then(({data})=>{
             const userData = {
                 user: data.user,
@@ -75,68 +75,5 @@ function Login(){
         </Main>
     )
 }
-
-const Main = styled.div`
-    background-color: #8c22be;
-    width: 100vw;
-    min-height: 100vh;
-    h1{
-        font-family: 'Saira Stencil One';
-        color: #fff;
-        font-weight: 400;
-        font-size: 32px;
-        padding-bottom: 25px;
-    }
-    h2{
-        font-family: 'Raleway', sans-serif;
-        font-weight: 700;
-        color: #fff;
-        font-size: 15px;
-    }
-`
-const Container = styled.div`
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Form = styled.form`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Input = styled.input`
-    width: 326px;
-    height: 58px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    padding-left: 15px;
-    ::placeholder{
-        color: #000;
-    }
-`
-
-const Button = styled.button`
-    background-color: #a328D6;
-    width: 326px;
-    height: 46px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 35px;
-`
 
 export default Login

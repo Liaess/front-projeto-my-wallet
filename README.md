@@ -36,6 +36,7 @@ The following tools and frameworks were used in the construction of the project:
 npm i
 ```
 4. Run the front-end with
+5. Make a copy of .env.example and alter informations according to your preference
 ```bash
 npm start
 ```
@@ -43,4 +44,4 @@ npm start
 ```bash
 npm run build
 ```
-6. Finally access http://localhost:3000 on your favorite browser
+6. Finally access your preference url

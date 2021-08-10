@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { ExitOutline } from 'react-ionicons';
 import { AddCircleOutline } from 'react-ionicons';
 import { RemoveCircleOutline } from 'react-ionicons';
@@ -8,6 +7,7 @@ import { useContext, useState, useEffect } from "react";
 import axios from "axios";
 import Transaction from "../Component/Transaction";
 import Loading from "../Component/Loading";
+import { Main, Header, MyWallet, History, Price, EmptyBox, Create, Revenue, Expense, Balance } from "../Styles/WalletStyles"
 
 function Wallet(){
     const { user } = useContext(UserContext);
@@ -16,7 +16,7 @@ function Wallet(){
     const history = useHistory();
 
     function logout(){
-        const req = axios.post(`http://localhost:4000/logout`,{}, {
+        const req = axios.post(`${process.env.REACT_APP_API_BASE_URL}/logout`,{}, {
             headers: { Authorization: `Bearer ${user.token}`}
         });
         req.then(()=>{localStorage.clear();history.push("/")});
@@ -32,7 +32,7 @@ function Wallet(){
     }
 
     function getWalletItems(){
-        const req = axios.get(`http://localhost:4000/wallet`, {
+        const req = axios.get(`${process.env.REACT_APP_API_BASE_URL}/wallet`, {
             headers: { Authorization: `Bearer ${user.token}`}
         });
         req.then(({data})=>{
@@ -104,124 +104,5 @@ function Wallet(){
     )
 }
 
-
-const Main = styled.div`
-    background-color: #8c22be;
-    width: 100vw;
-    min-height: 100vh;
-    font-family: 'Raleway', sans-serif;
-`
-
-const Header = styled.div`
-    display: flex;
-    color: #fff;
-    font-weight: 700;
-    justify-content: space-between;
-    padding: 25px 25px 20px 25px;
-    font-size: 22px;
-`
-
-const MyWallet = styled.div`
-    display: flex;
-    width: 326px;
-    min-height: 446px;
-    max-height: 446px;
-    background-color: #fff;
-    margin: 0 auto;
-    border-radius: 5px;
-    flex-direction: column;
-    justify-content: space-between;
-    h2{
-        width: 60%;
-        font-weight: 400;
-        text-align: center;
-        color: #868686;
-        font-size: 20px;
-    }
-`
-
-const History = styled.div`
-    display: flex;
-    flex-direction: column;
-    overflow-y: scroll;
-`
-
-const Price = styled.span`
-    color: ${props => props.total > 0 ? "green" : "red"};
-`
-
-const EmptyBox = styled.div`
-    display: flex;
-    width: 326px;
-    min-height: 446px;
-    background-color: #fff;
-    margin: 0 auto;
-    border-radius: 5px;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    h2{
-        width: 60%;
-        font-weight: 400;
-        text-align: center;
-        color: #868686;
-        font-size: 20px;
-    }
-`
-
-const Create = styled.div`
-    width: 326px;
-    min-height: 114px;
-    margin: 0 auto;
-    margin-top: 15px;
-    display: flex;
-    justify-content: space-between;
-    font-family: 'Raleway', sans-serif;
-    color: #fff;
-`
-
-const Revenue = styled.div`
-    width: 155px;
-    height: 114px;
-    background-color: #A328D6;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px 0px 10px 10px;
-    p{
-        width: 40%;
-        font-weight: 700;
-    }
-`
-
-const Expense = styled.div`
-    width: 155px;
-    height: 114px;
-    background-color: #A328D6;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px 0px 10px 10px;
-    p{
-        width: 40%;
-        font-weight: 700;
-    }
-`
-
-const Balance = styled.div`
-    display:flex;
-    justify-content: space-between;
-    font-family: 'Raleway';
-    font-size: 17px;
-    color: #000000;
-    padding: 10px 10px;
-    word-break: break-all;
-    p{
-        font-weight: bold;
-        min-width: 65px;
-    }
-`;
 
 export default Wallet

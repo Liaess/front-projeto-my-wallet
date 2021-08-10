@@ -1,8 +1,8 @@
-import styled from "styled-components";
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { useState } from "react";
 import Loader from "react-loader-spinner";
+import { Main, Container, Form, Input, Button } from "../Styles/SignupStyles"
 
 function Signup(){
     const [disable, setDisable] = useState(false);
@@ -27,7 +27,7 @@ function Signup(){
             email,
             password
         }
-        const req = axios.post(`http://localhost:4000/signup`,body);
+        const req = axios.post(`${process.env.REACT_APP_API_BASE_URL}/signup`,body);
         req.then(()=>{
             history.push("/")
         });
@@ -85,69 +85,5 @@ function Signup(){
         </Main>
     )
 }
-
-const Main = styled.div`
-    background-color: #8c22be;
-    width: 100vw;
-    min-height: 100vh;
-    h1{
-        font-family: 'Saira Stencil One';
-        color: #fff;
-        font-weight: 400;
-        font-size: 32px;
-        padding-bottom: 25px;
-    }
-    h2{
-        font-family: 'Raleway', sans-serif;
-        font-weight: 700;
-        color: #fff;
-        font-size: 15px;
-    }
-`
-
-const Container = styled.div`
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Form = styled.form`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-`
-
-const Input = styled.input`
-    width: 326px;
-    height: 58px;
-    margin-bottom: 15px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    font-family: 'Raleway', sans-serif;
-    font-size: 20px;
-    font-weight: 400;
-    padding-left: 15px;
-    ::placeholder{
-        color: #000;
-    }
-`
-
-const Button = styled.button`
-    background-color: #a328D6;
-    width: 326px;
-    height: 46px;
-    border: none;
-    border-radius: 5px;
-    color: #fff;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    font-size: 20px;
-    margin-bottom: 35px;
-`
 
 export default Signup

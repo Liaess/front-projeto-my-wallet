@@ -6,7 +6,7 @@ import Expense from "./Pages/Expense";
 import GlobalStyles from "./Styles/GlobalStyles";
 import { Route, Switch, BrowserRouter } from "react-router-dom"; 
 import UserContext from "./Context/UserContext";
-import { useState } from "react";
+import React, { useState } from "react";
 
 function App() {
   const [user, setUser] = useState()
