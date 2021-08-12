@@ -6,11 +6,15 @@ An easy to use financial manager. Track your revenues and expenses to learn how 
 
 This is an web application with which lots of people can manage their own expenses and revenues. Below are the implemented features:
 
-- Sign Up
-- Login
-- List all financial events for a user
-- Add expense
-- Add revenue
+- [x] Sign Up
+- [x] Login
+- [x] List all financial events for a user
+- [x] Add expense
+- [x] Add revenue
+- [x] Logout
+
+### Future improvements
+- [ ] Improve login persistence
 
 By using this app any user can learn how they've been using their money and always keep track of your balance.
 
